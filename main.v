@@ -18,6 +18,7 @@ module main(clk, rst, freeze, move, keypadRow, keypadCol, dot_row, dot_col, r_ou
 	output	[7:0]		dot_row, dot_col;
 
 	wire				vga_clk, game_clk, move_clk, key_clk, mat_clk;
+	wire				draw;
 	wire	[3071:0]	state;
 	wire	[3:0]		pattern_idx;
 	wire	[63:0]		pattern_mat;
@@ -32,11 +33,12 @@ module main(clk, rst, freeze, move, keypadRow, keypadCol, dot_row, dot_col, r_ou
 
 	// inputs
 	move_cursor		M1(move_clk, rst, move, cursor_x, cursor_y);
-	choose_pattern	N1(key_clk, rst, keypadRow, keypadCol, pattern_idx);
+	choose_pattern	N1(key_clk, rst, keypadRow, keypadCol, pattern_idx, draw);
 
 	// states
 	conway_fsm		F1(game_clk, rst, freeze, state);
-	load_pattern	G1(clk, rst, pattern_idx, pattern_mat);
+	load_pattern	G1(game_clk, rst, pattern_idx, pattern_mat);
+	draw_pattern	H1(draw, pattern_mat, state, cursor_x, cursor_y);
 
 	// outputs
 	display			M2(vga_clk, rst, state, r_out, g_out, b_out, hsync, vsync);
