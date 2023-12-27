@@ -6,7 +6,7 @@
 `define MAX_X 8'd64
 `define MAX_Y 8'd48
 
-module main(clk, rst, freeze, move, keypadRow, keypadCol, r_out, g_out, b_out, hsync, vsync);
+module main(clk, rst, freeze, move, keypadRow, keypadCol, dot_row, dot_col, r_out, g_out, b_out, hsync, vsync);
 	input				clk, rst;
 	input				freeze;
 	input	[3:0]		move;
@@ -15,6 +15,7 @@ module main(clk, rst, freeze, move, keypadRow, keypadCol, r_out, g_out, b_out, h
 	output				hsync, vsync;
 	output	[3:0]		r_out, g_out, b_out;
 	output	[3:0]		keypadRow;
+	output	[7:0]		dot_row, dot_col;
 
 	wire				vga_clk, game_clk, move_clk, key_clk, mat_clk;
 	wire	[3071:0]	state;
@@ -39,5 +40,7 @@ module main(clk, rst, freeze, move, keypadRow, keypadCol, r_out, g_out, b_out, h
 
 	// outputs
 	display			M2(vga_clk, rst, state, r_out, g_out, b_out, hsync, vsync);
+	display_matrix	M4(mat_clk, rst, pattern_mat, dot_row, dot_col);
+
 endmodule
 
