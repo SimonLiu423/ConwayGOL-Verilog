@@ -1,0 +1,17 @@
+`define TimeExpire_VGA 32'd1
+`define TimeExpire_Game 32'd12500000
+
+module main(clk, rst, r_out, g_out, b_out, hsync, vsync);
+	input				clk, rst;
+	output				hsync, vsync;
+	output	[3:0]		r_out, g_out, b_out;
+
+	wire				vga_clk, game_clk;
+	wire	[3071:0]	state;
+
+	clk_div			M0(clk, rst, `TimeExpire_VGA, vga_clk);
+	clk_div			M00(clk, rst, `TimeExpire_Game, game_clk);
+	conway_fsm		M1(game_clk, rst, state);
+	display			M2(vga_clk, rst, state, r_out, g_out, b_out, hsync, vsync);
+endmodule
+

@@ -1,0 +1,57 @@
+module conway_fsm(clk, rst, freeze, state);
+	input					clk, rst;
+	input					freeze;
+	output reg	[3071:0]	state;
+	reg			[63:0]		state_cp [47:0];
+
+	integer i, j, di, dj, ni, nj;
+	integer live_neighbors;
+
+	always @(posedge clk or negedge rst) begin
+		if (!rst) begin
+			state = 0;
+			state[49] = 1;
+			state[50] = 1;
+			state[51] = 1;
+		end
+		else begin
+			if (freeze == 0) begin
+				for ( i = 0; i < 48; i = i + 1) begin
+					for ( j = 0; j < 64; j = j + 1) begin
+						state_cp[i][j] = state[i*48+j];
+					end
+				end
+
+				for ( i = 0; i < 48; i = i + 1) begin
+					for ( j = 0; j < 64; j = j + 1) begin
+						live_neighbors = 0;
+						for ( di = -1; di <= 1; di = di + 1) begin
+							for ( dj = -1; dj <= 1; dj = dj + 1 ) begin
+								if (~(di == 0 && dj == 0)) begin
+									ni = i + di;
+									nj = j + dj;
+									if (ni >= 0 && ni < 48 && nj >= 0 && nj < 64) begin
+										live_neighbors = live_neighbors + state_cp[ni][nj];
+									end	
+								end
+							end
+						end
+						
+						if (state_cp[i][j] == 1 && (live_neighbors < 2 || live_neighbors > 3)) begin
+        	        		state[i*48 + j] = 0; // Cell dies
+        	    		end
+						else if (state_cp[i][j] == 0 && live_neighbors == 3) begin
+							state[i*48 + j] = 1;
+        	    		end
+						else begin
+							state[i*48 + j] = state_cp[i][j];
+        	    		end
+					end
+				end
+			end
+
+		end
+	end
+	
+
+endmodule
