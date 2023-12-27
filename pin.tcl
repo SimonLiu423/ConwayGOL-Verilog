@@ -58,3 +58,37 @@ set_location_assignment PIN_G18 -to dot_col[4];
 set_location_assignment PIN_H14 -to dot_col[5];
 set_location_assignment PIN_H10 -to dot_col[6];
 set_location_assignment PIN_G11 -to dot_col[7];
+
+# set seven display
+set_location_assignment PIN_U21 -to seg1[0];
+set_location_assignment PIN_V21 -to seg1[1];
+set_location_assignment PIN_W22 -to seg1[2];
+set_location_assignment PIN_W21 -to seg1[3];
+set_location_assignment PIN_Y22 -to seg1[4];
+set_location_assignment PIN_Y21 -to seg1[5];
+set_location_assignment PIN_AA22 -to seg1[6];
+
+set_location_assignment PIN_AA20 -to seg2[0];
+set_location_assignment PIN_AB20 -to seg2[1];
+set_location_assignment PIN_AA19 -to seg2[2];
+set_location_assignment PIN_AA18 -to seg2[3];
+set_location_assignment PIN_AB18 -to seg2[4];
+set_location_assignment PIN_AA17 -to seg2[5];
+set_location_assignment PIN_U22 -to seg2[6];
+
+set_location_assignment PIN_Y19 -to seg3[0];
+set_location_assignment PIN_AB17 -to seg3[1];
+set_location_assignment PIN_AA10 -to seg3[2];
+set_location_assignment PIN_Y14 -to seg3[3];
+set_location_assignment PIN_V14 -to seg3[4];
+set_location_assignment PIN_AB22 -to seg3[5];
+set_location_assignment PIN_AB21 -to seg3[6];
+
+set_location_assignment PIN_Y16 -to seg4[0];
+set_location_assignment PIN_W16 -to seg4[1];
+set_location_assignment PIN_Y17 -to seg4[2];
+set_location_assignment PIN_V16 -to seg4[3];
+set_location_assignment PIN_U17 -to seg4[4];
+set_location_assignment PIN_V18 -to seg4[5];
+set_location_assignment PIN_V19 -to seg4[6];
+

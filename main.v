@@ -6,7 +6,7 @@
 `define MAX_X 8'd64
 `define MAX_Y 8'd48
 
-module main(clk, rst, freeze, move, keypadRow, keypadCol, dot_row, dot_col, r_out, g_out, b_out, hsync, vsync);
+module main(clk, rst, freeze, move, seg1, seg2, seg3, seg4, keypadRow, keypadCol, dot_row, dot_col, r_out, g_out, b_out, hsync, vsync);
 	input				clk, rst;
 	input				freeze;
 	input	[3:0]		move;
@@ -16,6 +16,7 @@ module main(clk, rst, freeze, move, keypadRow, keypadCol, dot_row, dot_col, r_ou
 	output	[3:0]		r_out, g_out, b_out;
 	output	[3:0]		keypadRow;
 	output	[7:0]		dot_row, dot_col;
+	output	[6:0]		seg1, seg2, seg3, seg4;
 
 	wire				vga_clk, game_clk, move_clk, key_clk, mat_clk;
 	wire				draw;
@@ -23,6 +24,7 @@ module main(clk, rst, freeze, move, keypadRow, keypadCol, dot_row, dot_col, r_ou
 	wire	[3:0]		pattern_idx;
 	wire	[63:0]		pattern_mat;
 	wire	[7:0]		cursor_x, cursor_y;
+	wire	[11:0]		alives;
 
 	// clks
 	clk_div			A0(clk, rst, `TimeExpire_VGA, vga_clk);
@@ -36,13 +38,14 @@ module main(clk, rst, freeze, move, keypadRow, keypadCol, dot_row, dot_col, r_ou
 	choose_pattern	N1(key_clk, rst, keypadRow, keypadCol, pattern_idx, draw);
 
 	// states
-	conway_fsm		F1(game_clk, rst, freeze, state);
+	conway_fsm		F1(game_clk, rst, freeze, state, alives);
 	load_pattern	G1(game_clk, rst, pattern_idx, pattern_mat);
-	draw_pattern	H1(draw, pattern_mat, state, cursor_x, cursor_y);
+	draw_pattern	H1(draw, pattern_mat, state, cursor_x, cursor_y, alives);
 
 	// outputs
 	display			M2(vga_clk, rst, state, r_out, g_out, b_out, hsync, vsync);
 	display_matrix	M4(mat_clk, rst, pattern_mat, dot_row, dot_col);
+	display_seven	M3(alives, seg1, seg2, seg3, seg4);
 
 endmodule
 

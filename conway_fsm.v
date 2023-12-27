@@ -1,7 +1,8 @@
-module conway_fsm(clk, rst, freeze, state);
+module conway_fsm(clk, rst, freeze, state, alives);
 	input					clk, rst;
 	input					freeze;
 	output reg	[3071:0]	state;
+	output reg	[11:0]		alives;
 	reg			[3071:0]	state_cp;
 
 	integer x, y, dx, dy, nx, ny;
@@ -13,6 +14,7 @@ module conway_fsm(clk, rst, freeze, state);
 			state[49] = 1;
 			state[50] = 1;
 			state[51] = 1;
+			alives = 0;
 		end
 		else begin
 			if (freeze == 0) begin
@@ -35,9 +37,11 @@ module conway_fsm(clk, rst, freeze, state);
 						
 						if (state[idx] == 1 && (live_neighbors < 2 || live_neighbors > 3)) begin
         	        		state[idx] = 0; // Cell dies
+							alives = alives - 1;
         	    		end
 						else if (state[idx] == 0 && live_neighbors == 3) begin
 							state[idx] = 1;
+							alives = alives + 1;
         	    		end
 						else begin
 							state[idx] = state[idx];
