@@ -3,6 +3,7 @@ set_location_assignment PIN_M9 -to clk;
 # set reset
 set_location_assignment PIN_P22 -to rst;
 
+# set VGA
 set_location_assignment PIN_A9 -to r_out[0];
 set_location_assignment PIN_B10 -to r_out[1];
 set_location_assignment PIN_C9 -to r_out[2];
@@ -17,3 +18,12 @@ set_location_assignment PIN_A8 -to b_out[2];
 set_location_assignment PIN_A7 -to b_out[3];
 set_location_assignment PIN_H8 -to hsync;
 set_location_assignment PIN_G8 -to vsync;
+
+# set movement for cursor
+set_location_assignment PIN_U7 -to move[0];
+set_location_assignment PIN_W9 -to move[1];
+set_location_assignment PIN_M7 -to move[2];
+set_location_assignment PIN_M6 -to move[3];
+
+# set freeze
+set_location_assignment PIN_U13 -to freeze;
