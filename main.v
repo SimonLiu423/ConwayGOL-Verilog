@@ -3,6 +3,9 @@
 `define TimeExpire_Movement 32'd10000
 `define TimeExpire_Keypad 32'd250000
 `define TimeExpire_Matrix 32'd2500
+`define PREV(val, max) ((val) == 0 ? (max-1) : (val)-1)
+`define NEXT(val, max) ((val) == (max-1) ? 0 : (val)+1)
+`define idx(y, x) ((y)*`MAX_X + (x))
 // `define MAX_X 8'd64
 // `define MAX_Y 8'd48
 `define MAX_X 16'd32
@@ -36,18 +39,18 @@ module main(clk, rst, freeze, move, seg1, seg2, seg3, seg4, keypadRow, keypadCol
 	clk_div			E0(clk, rst, `TimeExpire_Matrix, mat_clk);
 
 	// inputs
-	move_cursor		M1(move_clk, rst, move, cursor_x, cursor_y);
-	choose_pattern	N1(key_clk, rst, keypadRow, keypadCol, pattern_idx, draw);
+	// move_cursor		M1(move_clk, rst, move, cursor_x, cursor_y);
+	// choose_pattern	N1(key_clk, rst, keypadRow, keypadCol, pattern_idx, draw);
 
 	// states
 	conway_fsm		F1(game_clk, rst, draw, freeze, cursor_x, cursor_y, pattern_mat, state, alives);
-	load_pattern	G1(game_clk, rst, pattern_idx, pattern_mat);
+	// load_pattern	G1(game_clk, rst, pattern_idx, pattern_mat);
 	// draw_pattern	H1(draw, pattern_mat, state, cursor_x, cursor_y, alives);
 
 	// outputs
 	display			M2(vga_clk, rst, state, r_out, g_out, b_out, hsync, vsync);
-	display_matrix	M4(mat_clk, rst, pattern_mat, dot_row, dot_col);
-	display_seven	M3(alives, seg1, seg2, seg3, seg4);
+	// display_matrix	M4(mat_clk, rst, pattern_mat, dot_row, dot_col);
+	// display_seven	M3(alives, seg1, seg2, seg3, seg4);
 
 endmodule
 
