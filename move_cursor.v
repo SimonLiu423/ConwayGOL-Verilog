@@ -28,4 +28,4 @@ module move_cursor(clk, rst, move, cursor_x, cursor_y);
 		end
 		
 	end
-endmodule;
+endmodule

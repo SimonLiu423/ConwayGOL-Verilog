@@ -41,17 +41,18 @@ set_global_assignment -name DEVICE 5CEFA4F23C7
 set_global_assignment -name TOP_LEVEL_ENTITY main
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 18.1.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "17:02:18  DECEMBER 27, 2023"
-set_global_assignment -name LAST_QUARTUS_VERSION "18.1.0 Lite Edition"
+set_global_assignment -name LAST_QUARTUS_VERSION "23.1std.0 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
 set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
-set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (Verilog)"
+set_global_assignment -name EDA_SIMULATION_TOOL "Questa Intel FPGA (Verilog)"
 set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
 set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name POST_MODULE_SCRIPT_FILE "quartus_sh:AutoProgrammer.tcl"
 set_location_assignment PIN_M9 -to clk
 set_location_assignment PIN_P22 -to rst
 set_location_assignment PIN_A9 -to r_out[0]
@@ -68,4 +69,61 @@ set_location_assignment PIN_A8 -to b_out[2]
 set_location_assignment PIN_A7 -to b_out[3]
 set_location_assignment PIN_H8 -to hsync
 set_location_assignment PIN_G8 -to vsync
+set_location_assignment PIN_U7 -to move[0]
+set_location_assignment PIN_W9 -to move[1]
+set_location_assignment PIN_M7 -to move[2]
+set_location_assignment PIN_M6 -to move[3]
+set_location_assignment PIN_U13 -to freeze
+set_location_assignment PIN_J17 -to keypadRow[0]
+set_location_assignment PIN_G13 -to keypadRow[1]
+set_location_assignment PIN_G16 -to keypadRow[2]
+set_location_assignment PIN_F13 -to keypadRow[3]
+set_location_assignment PIN_F12 -to keypadCol[0]
+set_location_assignment PIN_G15 -to keypadCol[1]
+set_location_assignment PIN_G12 -to keypadCol[2]
+set_location_assignment PIN_K16 -to keypadCol[3]
+set_location_assignment PIN_E15 -to dot_row[0]
+set_location_assignment PIN_B15 -to dot_row[1]
+set_location_assignment PIN_A12 -to dot_row[2]
+set_location_assignment PIN_E14 -to dot_row[3]
+set_location_assignment PIN_C13 -to dot_row[4]
+set_location_assignment PIN_B12 -to dot_row[5]
+set_location_assignment PIN_A13 -to dot_row[6]
+set_location_assignment PIN_D13 -to dot_row[7]
+set_location_assignment PIN_J11 -to dot_col[0]
+set_location_assignment PIN_J19 -to dot_col[1]
+set_location_assignment PIN_H18 -to dot_col[2]
+set_location_assignment PIN_A15 -to dot_col[3]
+set_location_assignment PIN_G18 -to dot_col[4]
+set_location_assignment PIN_H14 -to dot_col[5]
+set_location_assignment PIN_H10 -to dot_col[6]
+set_location_assignment PIN_G11 -to dot_col[7]
+set_location_assignment PIN_U21 -to seg1[0]
+set_location_assignment PIN_V21 -to seg1[1]
+set_location_assignment PIN_W22 -to seg1[2]
+set_location_assignment PIN_W21 -to seg1[3]
+set_location_assignment PIN_Y22 -to seg1[4]
+set_location_assignment PIN_Y21 -to seg1[5]
+set_location_assignment PIN_AA22 -to seg1[6]
+set_location_assignment PIN_AA20 -to seg2[0]
+set_location_assignment PIN_AB20 -to seg2[1]
+set_location_assignment PIN_AA19 -to seg2[2]
+set_location_assignment PIN_AA18 -to seg2[3]
+set_location_assignment PIN_AB18 -to seg2[4]
+set_location_assignment PIN_AA17 -to seg2[5]
+set_location_assignment PIN_U22 -to seg2[6]
+set_location_assignment PIN_Y19 -to seg3[0]
+set_location_assignment PIN_AB17 -to seg3[1]
+set_location_assignment PIN_AA10 -to seg3[2]
+set_location_assignment PIN_Y14 -to seg3[3]
+set_location_assignment PIN_V14 -to seg3[4]
+set_location_assignment PIN_AB22 -to seg3[5]
+set_location_assignment PIN_AB21 -to seg3[6]
+set_location_assignment PIN_Y16 -to seg4[0]
+set_location_assignment PIN_W16 -to seg4[1]
+set_location_assignment PIN_Y17 -to seg4[2]
+set_location_assignment PIN_V16 -to seg4[3]
+set_location_assignment PIN_U17 -to seg4[4]
+set_location_assignment PIN_V18 -to seg4[5]
+set_location_assignment PIN_V19 -to seg4[6]
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

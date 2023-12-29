@@ -163,4 +163,4 @@ module load_pattern(clk, rst, pattern_idx, pattern_mat);
 			endcase
 		end
 	end
-endmodule;
+endmodule

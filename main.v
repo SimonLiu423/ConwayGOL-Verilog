@@ -3,8 +3,10 @@
 `define TimeExpire_Movement 32'd10000
 `define TimeExpire_Keypad 32'd250000
 `define TimeExpire_Matrix 32'd2500
-`define MAX_X 8'd64
-`define MAX_Y 8'd48
+// `define MAX_X 8'd64
+// `define MAX_Y 8'd48
+`define MAX_X 16'd32
+`define MAX_Y 16'd24
 
 module main(clk, rst, freeze, move, seg1, seg2, seg3, seg4, keypadRow, keypadCol, dot_row, dot_col, r_out, g_out, b_out, hsync, vsync);
 	input				clk, rst;
@@ -20,7 +22,7 @@ module main(clk, rst, freeze, move, seg1, seg2, seg3, seg4, keypadRow, keypadCol
 
 	wire				vga_clk, game_clk, move_clk, key_clk, mat_clk;
 	wire				draw;
-	wire	[3071:0]	state;
+	wire	[`MAX_X*`MAX_Y-1:0]	state;
 	wire	[3:0]		pattern_idx;
 	wire	[63:0]		pattern_mat;
 	wire	[7:0]		cursor_x, cursor_y;
@@ -38,9 +40,9 @@ module main(clk, rst, freeze, move, seg1, seg2, seg3, seg4, keypadRow, keypadCol
 	choose_pattern	N1(key_clk, rst, keypadRow, keypadCol, pattern_idx, draw);
 
 	// states
-	conway_fsm		F1(game_clk, rst, freeze, state, alives);
+	conway_fsm		F1(game_clk, rst, draw, freeze, cursor_x, cursor_y, pattern_mat, state, alives);
 	load_pattern	G1(game_clk, rst, pattern_idx, pattern_mat);
-	draw_pattern	H1(draw, pattern_mat, state, cursor_x, cursor_y, alives);
+	// draw_pattern	H1(draw, pattern_mat, state, cursor_x, cursor_y, alives);
 
 	// outputs
 	display			M2(vga_clk, rst, state, r_out, g_out, b_out, hsync, vsync);
