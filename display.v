@@ -9,13 +9,21 @@
 `define V_VideoBegin		(`V_Back + 33)
 `define V_VideoEnd			(`V_VideoBegin + `DisplayHeight)
 
-module display(clk, rst, state, r_out, g_out, b_out, hsync, vsync);
-	input					clk, rst;
-	input		[`MAX_X*`MAX_Y-1:0]	state;
-	output reg				hsync, vsync;
-	output reg	[3:0]		r_out, g_out, b_out;
+module display(
+	input							clk,
+	input							rst,
+	input		[`MAX_X*`MAX_Y-1:0]	state,
+	input		[7:0]				cursor_x,
+	input		[7:0]				cursor_y,
+	output reg	[3:0]				r_out,
+	output reg	[3:0]				g_out,
+	output reg	[3:0]				b_out,
+	output reg						hsync,
+	output reg						vsync
+);
 
 	reg			[9:0]		row_cnt, col_cnt;
+	integer					grid_x, grid_y;
 
 	always @(posedge clk or negedge rst) begin
 		if (!rst) begin
@@ -36,11 +44,16 @@ module display(clk, rst, state, r_out, g_out, b_out, hsync, vsync);
 			end
 
 			if (row_cnt >= `V_VideoBegin && row_cnt < `V_VideoEnd - 1 && col_cnt >= `H_VideoBegin && col_cnt < `H_VideoEnd - 1) begin
+				grid_y = (row_cnt - `V_VideoBegin) / 20;
+				grid_x = (col_cnt - `H_VideoBegin) / 20;
 				if(row_cnt == `V_VideoBegin || row_cnt+1 == `V_VideoEnd-1 || col_cnt == `H_VideoBegin || col_cnt+1 == `H_VideoEnd-1)begin
 					r_out <= 4'b1111;
 					g_out <= 4'b1111;
 					b_out <= 4'b1111;
-				end else if (state[((row_cnt-`V_VideoBegin) / 20) * `MAX_X + ((col_cnt-`H_VideoBegin) / 20)] ) begin
+				end
+				else if (grid_y == )begin
+				end
+				else if (state[`idx(grid_y, grid_x)]) begin
 					r_out <= 4'b1111;
 					g_out <= 4'b1111;
 					b_out <= 4'b1111;

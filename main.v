@@ -48,7 +48,7 @@ module main(clk, rst, freeze, move, seg1, seg2, seg3, seg4, keypadRow, keypadCol
 	// draw_pattern	H1(draw, pattern_mat, state, cursor_x, cursor_y, alives);
 
 	// outputs
-	display			M2(vga_clk, rst, state, r_out, g_out, b_out, hsync, vsync);
+	display			M2(vga_clk, rst, state, cursor_x, cursor_y, r_out, g_out, b_out, hsync, vsync);
 	// display_matrix	M4(mat_clk, rst, pattern_mat, dot_row, dot_col);
 	// display_seven	M3(alives, seg1, seg2, seg3, seg4);
 

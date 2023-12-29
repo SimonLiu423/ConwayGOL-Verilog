@@ -39,26 +39,26 @@ module conway_fsm(
 				for ( y = 0; y < `MAX_Y; y = y + 1) begin
 					for ( x = 0; x < `MAX_X; x = x + 1) begin
 						live_neighbors = 
-							state_cp[idx(PREV(y, `MAX_Y), PREV(x, `MAX_X))] + 	// [y-1][x-1]
-							state_cp[idx(PREV(y, `MAX_Y), x)] +					// [y-1][x]
-							state_cp[idx(PREV(y, `MAX_Y), NEXT(x, `MAX_X))] + 	// [y-1][x+1]
-							state_cp[idx(y, PREV(x, `MAX_X))] + 				// [y][x-1]
-							state_cp[idx(y, NEXT(x, `MAX_X))] + 				// [y][x+1]
-							state_cp[idx(NEXT(y, `MAX_Y), PREV(x, `MAX_X))] + 	// [y+1][x-1]
-							state_cp[idx(NEXT(y, `MAX_Y), x)] + 				// [y+1][x]
-							state_cp[idx(NEXT(y, `MAX_Y), NEXT(x, `MAX_X))]; 	// [y+1][x+1]
+							state_cp[`idx(`PREV(y, `MAX_Y), `PREV(x, `MAX_X))] + 	// [y-1][x-1]
+							state_cp[`idx(`PREV(y, `MAX_Y), x)] +					// [y-1][x]
+							state_cp[`idx(`PREV(y, `MAX_Y), `NEXT(x, `MAX_X))] + 	// [y-1][x+1]
+							state_cp[`idx(y, `PREV(x, `MAX_X))] + 				// [y][x-1]
+							state_cp[`idx(y, `NEXT(x, `MAX_X))] + 				// [y][x+1]
+							state_cp[`idx(`NEXT(y, `MAX_Y), `PREV(x, `MAX_X))] + 	// [y+1][x-1]
+							state_cp[`idx(`NEXT(y, `MAX_Y), x)] + 				// [y+1][x]
+							state_cp[`idx(`NEXT(y, `MAX_Y), `NEXT(x, `MAX_X))]; 	// [y+1][x+1]
 						
 						u_idx = idx(y, x);
-						if (state[idx] == 1 && (live_neighbors < 2 || live_neighbors > 3)) begin
-        	        		state[idx] = 0; // Cell dies
+						if (state[u_idx] == 1 && (live_neighbors < 2 || live_neighbors > 3)) begin
+        	        		state[u_idx] = 0; // Cell dies
 							alives = alives - 1;
         	    		end
-						else if (state[idx] == 0 && live_neighbors == 3) begin
-							state[idx] = 1;
+						else if (state[u_idx] == 0 && live_neighbors == 3) begin
+							state[u_idx] = 1;
 							alives = alives + 1;
         	    		end
 						else begin
-							state[idx] = state[idx];
+							state[u_idx] = state[u_idx];
         	    		end
 					end
 				end
