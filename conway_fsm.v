@@ -1,3 +1,13 @@
+`define neighbors(y, x) \
+	(state[`idx(`PREV(y, 1, `MAX_Y), `PREV(x, 1, `MAX_X))] + 	/* [y-1][x-1] */ 	\
+	state[`idx(`PREV(y, 1, `MAX_Y), x)] +					/* [y-1][x] */ 		\
+	state[`idx(`PREV(y, 1, `MAX_Y), `NEXT(x, 1, `MAX_X))] + 	/* [y-1][x+1] */ 	\
+	state[`idx(y, `PREV(x, 1, `MAX_X))] + 					/* [y][x-1] */ 		\
+	state[`idx(y, `NEXT(x, 1, `MAX_X))] + 					/* [y][x+1] */ 		\
+	state[`idx(`NEXT(y, 1, `MAX_Y), `PREV(x, 1, `MAX_X))] + 	/* [y+1][x-1] */ 	\
+	state[`idx(`NEXT(y, 1, `MAX_Y), x)] + 					/* [y+1][x] */ 		\
+	state[`idx(`NEXT(y, 1, `MAX_Y), `NEXT(x, 1, `MAX_X))]) 	/* [y+1][x+1] */
+
 module conway_fsm(
 	input							clk,
 	input 							rst,
@@ -5,83 +15,90 @@ module conway_fsm(
 	input							freeze,
 	input		[7:0]				cursor_x, 
 	input		[7:0]				cursor_y,
-	input		[63:0]				pattern_mat,
-	output reg	[`MAX_X*`MAX_Y-1:0]	state,
-	output reg	[11:0]				alives
+	input		[0:63]				pattern_mat,
+	input							start_screen,
+	output reg	[0:`S_SIZE-1]		state
 );
-	reg			[`MAX_X*`MAX_Y-1:0]	state_cp;
-	integer x, y, dx, dy, nx, ny;
-	integer u_idx, live_neighbors;
+	integer x, y, dx, dy;
+	reg  							in_game;
+	// reg			[24:0]				count;
+	reg								drawed;
+	// reg								calc_state;
 
 	always @(posedge clk or negedge rst) begin
 		if (!rst) begin
-			state = 0;
-			state[2+3*`MAX_X] = 1;
-			state[3+4*`MAX_X] = 1;
-			state[3+5*`MAX_X] = 1;
-			state[2+5*`MAX_X] = 1;
-			state[1+5*`MAX_X] = 1;
+			in_game <= 0;
+			drawed <= 0;
+			state <= 
+				{
+					40'b0,
+					40'b0,
+					40'b0001110111101001010001001100101010011100,
+					40'b0010000100101001010001010010101010100000,
+					40'b0010000100101101010001010010111000111000,
+					40'b0010000100101011010101011110010000000100,
+					40'b0010000100101001010101010010010000000100,
+					40'b0001110111101001011111010010010000111000,
+					40'b0,
+					40'b0000000000000000001111001100011100111100,
+					40'b0000000000000000001000010010101010100000,
+					40'b0000000000000000001000010010101010111000,
+					40'b0000000000000000001011011110101010100000,
+					40'b0000000000000000001001010010101010100000,
+					40'b0000000000000000001111010010101010111100,
+					40'b0,
+					40'b0000000011110111100000000000000000000000,
+					40'b0000000010010100000000000000000000000000,
+					40'b0000000010010111000000000000000000000000,
+					40'b0000000010010100000000000000000000000000,
+					40'b0000000010010100000000000000000000000000,
+					40'b0000000011110100000000000000000000000000,
+					40'b0,
+					40'b0000000000000000100001011110111100000000,
+					40'b0000000000000000100001010000100000000000,
+					40'b0000000000000000100001011100111000000000,
+					40'b0000000000000000100001010000100000000000,
+					40'b0000000000000000100001010000100000000000,
+					40'b0000000000000000111101010000111100000000,
+					40'b0,
+				};
 
-			// state[2+10*`MAX_X] = 1;
-			// state[3+10*`MAX_X] = 1;
-			// state[2+11*`MAX_X] = 1;
-			// state[3+11*`MAX_X] = 1;
-
-			// state[4+12*`MAX_X] = 1;
-			// state[5+12*`MAX_X] = 1;
-			// state[4+13*`MAX_X] = 1;
-			// state[5+13*`MAX_X] = 1;
-			alives = 0;
 		end
 		else begin
-			if (freeze == 0) begin
-				state_cp = state;
-				for ( y = 0; y < `MAX_Y; y = y + 1) begin
-					for ( x = 0; x < `MAX_X; x = x + 1) begin
-						live_neighbors = 
-							state_cp[`idx(`PREV(y, `MAX_Y), `PREV(x, `MAX_X))] + 	// [y-1][x-1]
-							state_cp[`idx(`PREV(y, `MAX_Y), x)] +					// [y-1][x]
-							state_cp[`idx(`PREV(y, `MAX_Y), `NEXT(x, `MAX_X))] + 	// [y-1][x+1]
-							state_cp[`idx(y, `PREV(x, `MAX_X))] + 				// [y][x-1]
-							state_cp[`idx(y, `NEXT(x, `MAX_X))] + 				// [y][x+1]
-							state_cp[`idx(`NEXT(y, `MAX_Y), `PREV(x, `MAX_X))] + 	// [y+1][x-1]
-							state_cp[`idx(`NEXT(y, `MAX_Y), x)] + 				// [y+1][x]
-							state_cp[`idx(`NEXT(y, `MAX_Y), `NEXT(x, `MAX_X))]; 	// [y+1][x+1]
-						
-						u_idx = idx(y, x);
-						if (state[u_idx] == 1 && (live_neighbors < 2 || live_neighbors > 3)) begin
-        	        		state[u_idx] = 0; // Cell dies
-							alives = alives - 1;
-        	    		end
-						else if (state[u_idx] == 0 && live_neighbors == 3) begin
-							state[u_idx] = 1;
-							alives = alives + 1;
-        	    		end
-						else begin
-							state[u_idx] = state[u_idx];
-        	    		end
+			if (start_screen == 0) begin
+				// calc_state = (count >= 2 * `TimeExpire_Game) ? 1 : 0;
+				if (in_game == 0) begin
+					in_game <= 1;
+					state <= 0;
+				end
+				else begin
+					for ( y = 0; y < `MAX_Y; y = y + 1) begin
+						for ( x = 0; x < `MAX_X; x = x + 1) begin
+							dx = (x >= cursor_x) ? (x - cursor_x) : (x + `MAX_X - cursor_x);
+							dy = (y >= cursor_y) ? (y - cursor_y) : (y + `MAX_Y - cursor_y);
+
+							if (draw && (dx < 8) && (dy < 8) && (pattern_mat[(dy)*8 + (dx)] == 1)) begin
+								if (drawed == 0) begin
+									state[`idx(y,x)] <= 1;
+									drawed <= 1;
+								end
+							end
+							else if (freeze == 0 && state[`idx(y,x)] == 1 && (`neighbors(y,x) < 2 || `neighbors(y,x) > 3)) begin
+   		    	        		state[`idx(y,x)] <= 0; // Cell dies
+								drawed <= 0;
+   		    	    		end
+							else if (freeze == 0 && state[`idx(y,x)] == 0 && `neighbors(y,x) == 3) begin
+								state[`idx(y,x)] <= 1;
+								drawed <= 0;
+   		    	    		end
+							else begin
+								state[`idx(y,x)] <= state[`idx(y,x)];
+								drawed <= 0;
+   		    	    		end
+						end
 					end
 				end
 			end
-			// if (draw == 0) begin
-			// 	for ( dy = 0; dy < 8; dy = dy + 1 ) begin
-			// 		for ( dx = 0; dx < 8; dx = dx + 1 ) begin
-			// 			ny = cursor_y + dy;
-			// 			nx = cursor_x + dx;
-			// 			if(ny < 0) ny = ny + `MAX_Y;
-			// 			if(nx < 0) nx = nx + `MAX_X;
-			// 			if(ny == `MAX_Y) ny = 0;
-			// 			if(nx == `MAX_X) nx = 0;
-			// 			idx = ny * `MAX_X + nx;
-			// 			if (pattern_mat[dy*8 + dx]) begin
-			// 				if (state[idx] == 0) alives = alives + 1;
-			// 				state[idx] = 1;
-			// 			ls
-			// end
-			// 		end
-			// 	end
-			// end
-
 		end
 	end
 	

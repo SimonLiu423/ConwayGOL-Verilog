@@ -8,7 +8,7 @@ module choose_pattern(clk, rst, keypadRow, keypadCol, pattern, draw);
 	always @(posedge clk or negedge rst) begin
 		if (!rst) begin
 			keypadRow <= 4'b1110;
-			pattern <= 4'h0;
+			pattern <= 4'h1;
 			draw <= 0;
 		end
 		else begin
@@ -25,7 +25,7 @@ module choose_pattern(clk, rst, keypadRow, keypadCol, pattern, draw);
 				8'b1101_1011: pattern <= 4'h2;
 				8'b1101_1101: pattern <= 4'h5;
 				8'b1101_1110: pattern <= 4'h8;
-				8'b1110_0111: pattern <= 4'h0;
+				8'b1110_0111: pattern <= pattern;
 				8'b1110_1011: pattern <= 4'h1;
 				8'b1110_1101: pattern <= 4'h4;
 				8'b1110_1110: pattern <= 4'h7;

@@ -1,14 +1,14 @@
-module load_pattern(clk, rst, pattern_idx, pattern_mat);
+module load_pattern(clk, rst, pattern_id, pattern_mat);
 	input				clk, rst;
-	input		[3:0]	pattern_idx;
-	output reg	[63:0]	pattern_mat;
+	input		[3:0]	pattern_id;
+	output reg	[0:63]	pattern_mat;
 
 	always @(posedge clk or negedge rst) begin
 		if (!rst) begin
 			pattern_mat <= 0;
 		end
 		else begin
-			case (pattern_idx)
+			case (pattern_id)
 				4'h1: pattern_mat <= {
 						8'b10000000,
 						8'b00000000,
@@ -119,7 +119,7 @@ module load_pattern(clk, rst, pattern_idx, pattern_mat);
 						8'b00000000,
 						8'b00000000
 					};
-				4'hc: pattern_mat <= {
+				4'hf: pattern_mat <= {
 						8'b01000000,
 						8'b00010000,
 						8'b11001110,
@@ -129,7 +129,7 @@ module load_pattern(clk, rst, pattern_idx, pattern_mat);
 						8'b00000000,
 						8'b00000000
 					};
-				4'hd: pattern_mat <= {
+				4'he: pattern_mat <= {
 						8'b11001000,
 						8'b10001000,
 						8'b10011000,
@@ -139,7 +139,7 @@ module load_pattern(clk, rst, pattern_idx, pattern_mat);
 						8'b00000000,
 						8'b00000000
 					};
-				4'he: pattern_mat <= {
+				4'hd: pattern_mat <= {
 						8'b11100000,
 						8'b00000000,
 						8'b01000000,
@@ -149,7 +149,7 @@ module load_pattern(clk, rst, pattern_idx, pattern_mat);
 						8'b00000000,
 						8'b00000000
 					};
-				4'hf: pattern_mat <= {
+				4'hc: pattern_mat <= {
 						8'b01010000,
 						8'b10000000,
 						8'b01001000,

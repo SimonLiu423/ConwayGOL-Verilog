@@ -20,13 +20,23 @@ set_location_assignment PIN_H8 -to hsync;
 set_location_assignment PIN_G8 -to vsync;
 
 # set movement for cursor
-set_location_assignment PIN_U7 -to move[0];
-set_location_assignment PIN_W9 -to move[1];
-set_location_assignment PIN_M7 -to move[2];
-set_location_assignment PIN_M6 -to move[3];
+set_location_assignment PIN_U7 -to move[3];
+set_location_assignment PIN_W9 -to move[2];
+set_location_assignment PIN_M7 -to move[1];
+set_location_assignment PIN_M6 -to move[0];
+
+# set show cursor
+set_location_assignment PIN_AB13 -to preview;
 
 # set freeze
-set_location_assignment PIN_U13 -to freeze;
+set_location_assignment PIN_AB12 -to freeze;
+
+# set speed
+set_location_assignment PIN_U13 -to speed[0];
+set_location_assignment PIN_V13 -to speed[1];
+set_location_assignment PIN_T13 -to speed[2];
+set_location_assignment PIN_T12 -to speed[3];
+
 
 # set keypad row
 set_location_assignment PIN_J17 -to keypadRow[0];
